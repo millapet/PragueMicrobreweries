@@ -24,12 +24,26 @@
   <body>
     <div id="mymap" style= "width: 100%; height: 100%" ></div>
 	<script type="text/javascript">
-		//var mymap = L.map('mymap').setView([50.082903, 14.424060], 12);
-		var map = L.map('mymap');
+		var map = L.map('mymap'); //.setView([50.082903, 14.424060], 12);
+		//map.control.locate().addTo(map);
+		//var map = L.map('mymap');
+		//map.locate({setView: true, maxZoom: 16});
 		map.locate({setView: true, maxZoom: 16});
+		function onLocationFound(e){
+			L.marker(e.latlng, {icon: youAreHereMarker}).addTo(map)
+				.bindPopup('<font size="3"> You are here </font>').openPopup();
+		}
+		
+		function onLocationError(e) {
+			map.setView([50.082903, 14.424060], 12);
+		}
+
+		map.on('locationerror', onLocationError);
+		map.on('locationfound', onLocationFound);
+		
 		
 		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>, <a href="https://icons8.com/icon/43489/beer">Beer icon by Icons8</a>',
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>, Icons © <a href="https://icons8.com/icons">Icons8</a>',
 			maxZoom: 18,
 			id: 'mapbox.light',
 			accessToken: 'pk.eyJ1IjoibWlsbGFwZXQiLCJhIjoiY2pycGRqNHYzMTl4MDN6cGpyZGpsYjRybyJ9.IWzPKinWNt-NvEGxkiJ97g'
@@ -59,11 +73,6 @@
 			onEachFeature: onEachFeature
 		}).addTo(map);
 		
-		function onLocationFound(e){
-			L.marker(e.latlng, {icon: youAreHereMarker}).addTo(map)
-				.bindPopup('<font size="3"> You are here </font>').openPopup();
-		}
-		map.on('locationfound', onLocationFound);
 	</script>
   </body>
 </html>
