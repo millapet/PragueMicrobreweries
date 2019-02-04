@@ -22,19 +22,29 @@
    <script src="pivovary.geojson" type="text/javascript"></script>
   </head>
   <body>
-    <div id="view" style= "width: 100%; height: 100%" ></div>
+    <div id="mymap" style= "width: 100%; height: 100%" ></div>
 	<script type="text/javascript">
-		var mymap = L.map('view').setView([50.082903, 14.424060], 12);
+		//var mymap = L.map('mymap').setView([50.082903, 14.424060], 12);
+		var map = L.map('mymap');
+		map.locate({setView: true, maxZoom: 16});
 		
 		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>, <a href="https://icons8.com/icon/43489/beer">Beer icon by Icons8</a>',
 			maxZoom: 18,
 			id: 'mapbox.light',
 			accessToken: 'pk.eyJ1IjoibWlsbGFwZXQiLCJhIjoiY2pycGRqNHYzMTl4MDN6cGpyZGpsYjRybyJ9.IWzPKinWNt-NvEGxkiJ97g'
-		}).addTo(mymap);
+		}).addTo(map);
 		
 		var geojsonMarker =	L.icon({
-			iconUrl: 'https://img.icons8.com/plasticine/42/000000/beer.png'
+			iconUrl: 'https://img.icons8.com/plasticine/42/000000/beer.png',
+			iconAnchor: [21,21],
+			popupAnchor: [0,-21]
+		});
+		
+		var youAreHereMarker = L.icon({
+			iconUrl: 'https://img.icons8.com/doodle/48/000000/chevron-down.png',
+			iconAnchor: [24,48],
+			popupAnchor: [0,-48]
 		});
 		
 		function onEachFeature(feature, layer){
@@ -47,7 +57,13 @@
 			pointToLayer: function (feature, latlng) {
 				return L.marker(latlng, {icon: geojsonMarker});},
 			onEachFeature: onEachFeature
-		}).addTo(mymap);
+		}).addTo(map);
+		
+		function onLocationFound(e){
+			L.marker(e.latlng, {icon: youAreHereMarker}).addTo(map)
+				.bindPopup('<font size="3"> You are here </font>').openPopup();
+		}
+		map.on('locationfound', onLocationFound);
 	</script>
   </body>
 </html>
