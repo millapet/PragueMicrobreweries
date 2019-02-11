@@ -32,7 +32,7 @@ var youAreHereMarker = L.icon({
 //----------
 function onEachFeature(feature, layer){
 	if (feature.properties && feature.properties.name) {
-		layer.bindPopup('<font size="3"><p><b>'+feature.properties.name+'</b></font><br /><font size="3">'+feature.properties.address+'<br /> <a href="'+feature.properties.web+'">'+feature.properties.web+'</a></p></font>');
+		layer.bindPopup('<font size="3"><p><b>'+feature.properties.name+'</b></font><br /><font size="3">'+feature.properties.address+'<br /> <a href="'+feature.properties.web+'">'+feature.properties.web+'</a></p></font>')
 	}
 }
 				
@@ -46,11 +46,13 @@ var geojsonLayer = L.geoJSON(pivovary, {
 //----------
 map.locate({setView: true, maxZoom: 16});
 function onLocationFound(e){
-	L.marker(e.latlng, {icon: youAreHereMarker}).addTo(map)
+	L.marker(e.latlng, {icon: youAreHereMarker}).addTo(map),
 	//.bindPopup('<font size="3"> You are here </font>'+L.GeometryUtil.closestLayer(map, geojsonLayer.getLayers(), e.latlng).latlng).openPopup(),
-	//closestpt = L.GeometryUtil.closestLayer(map, geojsonLayer.getLayers(), e.latlng).latlng
+	closestPt = L.GeometryUtil.closestLayer(map, geojsonLayer.getLayers(), e.latlng),
+	ID = L.stamp(closestPt),
+	L.marker(closestPt.latlng,{icon: nearestBeerMarker}).addTo(map)
+	.bindPopup('<font size="3"><p><b>'+closestPt.layer.feature.properties.name+'</b></font><br /><font size="3">'+closestPt.layer.feature.properties.address+'<br /> <a href="'+closestPt.layer.feature.properties.web+'">'+closestPt.layer.feature.properties.web+'</a></p></font>')
 }
-		
 function onLocationError(e) {
 	map.setView([50.082903, 14.424060], 12);
 }
