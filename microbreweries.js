@@ -28,6 +28,12 @@ var youAreHereMarker = L.icon({
 	popupAnchor: [0,-42]
 });
 
+var getLocationMarker = L.divIcon({className:'leaflet-div-icon'});
+	//iconUrl: '<img src="https://img.icons8.com/plasticine/42/000000/place-marker.png">',
+	//iconAnchor: [21,21],
+	//popupAnchor: [0,-21]
+//});
+
 //GEOJSON LAYER
 //----------
 function onEachFeature(feature, layer){
@@ -42,9 +48,45 @@ var geojsonLayer = L.geoJSON(pivovary, {
 	onEachFeature: onEachFeature
 }).addTo(map);
 
+//LOCATION CONTROL BUTTON
+//----------
+var ourCustomControl = L.Control.extend({
+	options: {
+    position: 'topleft' 
+    //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
+  },
+ 
+  onAdd: function(map) {
+    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+	
+	//container.marker = L.marker(e.latlng, {icon: getLocationMarker});
+	
+    //container.style.background = 'URL(\'https://img.icons8.com/plasticine/30/000000/place-marker.png\')';
+	container.style.backgroundImage = 'URL(\'https://img.icons8.com/ios/15/000000/center-direction.png\')';
+	container.style.backgroundColor = 'white';
+	container.style.backgroundRepeat = 'no-repeat'
+	container.style.backgroundPosition = 'center';
+    container.style.width = '30px';
+    container.style.height = '30px';
+	
+	
+ 
+    container.onclick = function(){
+		map.locate({setView: true, maxZoom: 16});
+      console.log('buttonClicked');
+    }
+	container.ontouch = function(){
+		container.style.backgroundColor = 'gray';
+    }
+    return container;
+  },
+});
+
+map.addControl(new ourCustomControl());
+
 //USER LOCATION
 //----------
-map.locate({setView: true, maxZoom: 16});
+map.setView([50.082903, 14.424060], 12)
 function onLocationFound(e){
 	L.marker(e.latlng, {icon: youAreHereMarker}).addTo(map),
 	//.bindPopup('<font size="3"> You are here </font>'+L.GeometryUtil.closestLayer(map, geojsonLayer.getLayers(), e.latlng).latlng).openPopup(),
