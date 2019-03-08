@@ -23,8 +23,8 @@ var nearestBeerMarker = L.icon({
 });
 		
 var youAreHereMarker = L.icon({
-	iconUrl: 'https://img.icons8.com/doodle/42/000000/chevron-down.png',
-	//iconUrl: 'https://img.icons8.com/office/42/000000/map-pin.png',
+	//iconUrl: 'https://img.icons8.com/doodle/42/000000/chevron-down.png',
+	iconUrl: 'youarehere.png',
 	iconAnchor: [21,42],
 	popupAnchor: [0,-42]
 });
@@ -33,7 +33,7 @@ var youAreHereMarker = L.icon({
 //----------
 function onEachFeature(feature, layer){
 	if (feature.properties && feature.properties.name) {
-		layer.bindPopup('<font size="3"><p><b>'+feature.properties.name+'</b></font><br /><font size="3">'+feature.properties.address+'<br /> <a href="'+feature.properties.web+'">'+feature.properties.web+'</a></p></font>')
+		layer.bindPopup('<font size="3"><p><b>'+feature.properties.name+'</b></font><br /><font size="3">'+feature.properties.address+'<br /> <a target="_blank" href="'+feature.properties.web+'">'+feature.properties.web+'</a></p></font>')
 	}
 }
 				
