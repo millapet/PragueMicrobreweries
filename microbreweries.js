@@ -3,7 +3,7 @@ var map = L.map('mymap'); //.setView([50.082903, 14.424060], 12);
 
 var mapLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a target="_blank" href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a target="_blank" href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a target="_blank" href="https://www.mapbox.com/">Mapbox</a>, Icons © <a target="_blank" href="https://icons8.com/icons">Icons8</a> | <a target="_blank" href="https://github.com/millapet/PragueMicrobreweries">Github</a>',
-	maxZoom: 18,
+	maxZoom: 30,
 	id: 'mapbox.light',
 	accessToken: 'pk.eyJ1IjoibWlsbGFwZXQiLCJhIjoiY2pycGRqNHYzMTl4MDN6cGpyZGpsYjRybyJ9.IWzPKinWNt-NvEGxkiJ97g'
 }).addTo(map);
@@ -23,7 +23,6 @@ var nearestBeerMarker = L.icon({
 });
 		
 var youAreHereMarker = L.icon({
-	//iconUrl: 'https://img.icons8.com/doodle/42/000000/chevron-down.png',
 	iconUrl: 'youarehere.png',
 	iconAnchor: [21,42],
 	popupAnchor: [0,-42]
@@ -66,7 +65,7 @@ var ourCustomControl = L.Control.extend({
 	container.style.cursor = 'pointer';
 	
     container.onclick = function(){
-		map.locate({setView: true, maxZoom: 16});
+		map.locate({setView: true, maxZoom: 14});
       console.log('buttonClicked');
     }
 	container.onmouseover = function(){
